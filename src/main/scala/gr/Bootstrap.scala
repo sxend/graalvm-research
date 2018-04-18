@@ -4,21 +4,24 @@ import com.typesafe.config.ConfigFactory
 import spray.json._
 import DefaultJsonProtocol._
 import akka.actor.ActorSystem
-import akka.http.scaladsl.Http
-import akka.http.scaladsl.model._
-import akka.http.scaladsl.server.Directives._
-import akka.http.scaladsl.server.Route
-import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
+//import akka.http.scaladsl.Http
+//import akka.http.scaladsl.model._
+//import akka.http.scaladsl.server.Directives._
+//import akka.http.scaladsl.server.Route
+//import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.stream.ActorMaterializer
+
+import lol.http._
 
 import scala.io.StdIn
 
-object Bootstrap extends AnyRef
-  with SprayJsonSupport with DefaultJsonProtocol {
+object Bootstrap extends AnyRef //  with SprayJsonSupport with DefaultJsonProtocol
+{
   def main(args: Array[String]): Unit = {
     useTypesafeConfig
     useSprayJson
     startAkkaHttpServer
+    startLolHttpServer
   }
   private val config = ConfigFactory.load
 
@@ -52,6 +55,7 @@ object Bootstrap extends AnyRef
   implicit val system = ActorSystem("gr-system")
   implicit val materializer = ActorMaterializer()
   implicit val executionContext = system.dispatcher
+
   //  private val http = Http() // コンパイル時にコケる。
   /*
     error: Error encountered while parsing akka.actor.dungeon.Dispatch.swapMailbox(akka.dispatch.Mailbox)
@@ -68,7 +72,7 @@ object Bootstrap extends AnyRef
 	    at com.oracle.graal.pointsto.ObjectScanner.scanField(ObjectScanner.java:111)
     */
 
-    def route = complete(Entity("hello"))
+    //    def route = complete(Entity("hello"))
 
     // val bindingFuture = Http().bindAndHandleAsync(Route.asyncHandler(route), config.getString("gr.server.host"), config.getInt("gr.server.port"))
     // コンパイル時にコケる。
@@ -77,6 +81,12 @@ object Bootstrap extends AnyRef
         Parsing context:
 	      parsing akka.actor.dungeon.Children.reserveChild(Children.scala:133)
     */
+  }
+  private def startLolHttpServer: Unit = {
+    // Server.listen(config.getInt("gr.server.port")) { req =>
+    //   Ok("Hello world!")
+    // }
+    // lolhttp内部でnettyを初期化する際、リフレクションを使うメソッドを使用している。そこで実行時エラー
   }
 }
 

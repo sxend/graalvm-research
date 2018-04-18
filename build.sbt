@@ -19,6 +19,10 @@ libraryDependencies ++= {
   val akkaHttpVersion = "10.1.1"
   val spec2Version = "4.0.4"
   Seq(
+//    "org.slf4j" % "slf4j-api" % "1.7.25",
+//    "ch.qos.logback" % "logback-classic" % "1.2.3",
+//    "log4j" % "log4j" % "1.2.17",
+//    "com.criteo.lolhttp" %% "lolhttp" % "0.9.3",
     "io.spray" %%  "spray-json" % "1.3.3",
     "com.typesafe.akka" %% "akka-actor" % akkaVersion,
     "com.typesafe.akka" %% "akka-testkit" % akkaVersion % Test,
