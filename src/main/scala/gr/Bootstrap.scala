@@ -4,6 +4,7 @@ import com.typesafe.config.ConfigFactory
 import spray.json._
 import DefaultJsonProtocol._
 import akka.actor.ActorSystem
+import gr.Bootstrap.pw
 //import akka.http.scaladsl.Http
 //import akka.http.scaladsl.model._
 //import akka.http.scaladsl.server.Directives._
@@ -11,12 +12,18 @@ import akka.actor.ActorSystem
 //import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.stream.ActorMaterializer
 
-import lol.http._
+//import lol.http._
 
 import scala.io.StdIn
 
 object Bootstrap extends AnyRef //  with SprayJsonSupport with DefaultJsonProtocol
 {
+   val f = new java.io.File("/tmp/sample.txt")
+   val pw = new java.io.PrintWriter(new java.io.BufferedWriter(new java.io.FileWriter(f)))
+   pw.append("write:" + System.currentTimeMillis()) // ここはnative-image時にのみ評価される。
+   pw.close()
+   println("print file.") // ここもnative-image時にのみ評価される。実行時には評価されない。
+
   def main(args: Array[String]): Unit = {
     useTypesafeConfig
     useSprayJson

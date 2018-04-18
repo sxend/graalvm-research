@@ -19,7 +19,8 @@ libraryDependencies ++= {
   val akkaHttpVersion = "10.1.1"
   val spec2Version = "4.0.4"
   Seq(
-//    "org.slf4j" % "slf4j-api" % "1.7.25",
+//    "org.jboss.xnio" % "xnio-nio" % "3.6.2.Final",
+  //    "org.slf4j" % "slf4j-api" % "1.7.25",
 //    "ch.qos.logback" % "logback-classic" % "1.2.3",
 //    "log4j" % "log4j" % "1.2.17",
 //    "com.criteo.lolhttp" %% "lolhttp" % "0.9.3",
