@@ -19,6 +19,7 @@ libraryDependencies ++= {
   val akkaHttpVersion = "10.1.1"
   val spec2Version = "4.0.4"
   Seq(
+    "io.spray" %%  "spray-json" % "1.3.3",
     "com.typesafe.akka" %% "akka-actor" % akkaVersion,
     "com.typesafe.akka" %% "akka-testkit" % akkaVersion % Test,
     "com.typesafe.akka" %% "akka-stream" % akkaVersion,
