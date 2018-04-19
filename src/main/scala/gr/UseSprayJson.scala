@@ -5,7 +5,7 @@ import spray.json._
 import DefaultJsonProtocol._
 
 trait UseSprayJson {
-  implicit private val colorFormat = jsonFormat1(Entity)
+  implicit protected val colorFormat = jsonFormat1(Entity)
   protected def useSprayJson {
     // implicit val colorFormat = jsonFormat1(Entity) // ここでformat定義は出来ない。下記のような実行時エラー。
     /*

@@ -30,12 +30,13 @@ import org.apache.http.protocol.HttpCoreContext
 import org.apache.http.ssl.SSLContexts
 
 trait UseApacheHttpCore {
+  self: UseTypesafeConfig =>
   protected def useApacheHttpCore: Unit = {
-    val config = IOReactorConfig.custom.setSoTimeout(15000).setTcpNoDelay(true).build
+    val reactorConfig = IOReactorConfig.custom.setSoTimeout(15000).setTcpNoDelay(true).build
     val server = ServerBootstrap.bootstrap
-      .setListenerPort(Bootstrap.config.getInt("gr.server.port"))
+      .setListenerPort(config.getInt("gr.server.port"))
       .setServerInfo("GraalVM-NativeImage")
-      .setIOReactorConfig(config)
+      .setIOReactorConfig(reactorConfig)
       .setExceptionLogger(ExceptionLogger.STD_ERR)
       .registerHandler("*", new HttpHandler()).create
     server.start()

@@ -3,7 +3,7 @@ package gr
 import com.typesafe.config.{ Config, ConfigFactory }
 
 trait UseTypesafeConfig {
-  val config: Config = ConfigFactory.load
+  protected val config: Config = ConfigFactory.load
 
   protected def useTypesafeConfig: Unit = {
     // val config = ConfigFactory.load // ここでロードは出来ない。下記のような実行時エラー。
