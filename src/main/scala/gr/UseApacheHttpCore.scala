@@ -39,12 +39,13 @@ trait UseApacheHttpCore {
       .setExceptionLogger(ExceptionLogger.STD_ERR)
       .registerHandler("*", new HttpHandler()).create
     server.start()
-    server.awaitTermination(Long.MaxValue, TimeUnit.DAYS)
-    Runtime.getRuntime.addShutdownHook(new Thread() {
-      override def run(): Unit = {
-        server.shutdown(5, TimeUnit.SECONDS)
-      }
-    })
+    server.shutdown(5, TimeUnit.SECONDS)
+    //    server.awaitTermination(Long.MaxValue, TimeUnit.DAYS)
+    //    Runtime.getRuntime.addShutdownHook(new Thread() {
+    //      override def run(): Unit = {
+    //        server.shutdown(5, TimeUnit.SECONDS)
+    //      }
+    //    })
   }
 }
 class HttpHandler extends HttpAsyncRequestHandler[HttpRequest] {
