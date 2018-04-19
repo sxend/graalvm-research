@@ -39,6 +39,7 @@ trait UseApacheHttpCore {
       .setExceptionLogger(ExceptionLogger.STD_ERR)
       .registerHandler("*", new HttpHandler()).create
     server.start()
+    println(s"Use ApacheHttpCore Server. server: ${server.getEndpoint.getAddress.toString}")
     server.shutdown(5, TimeUnit.SECONDS)
     //    server.awaitTermination(Long.MaxValue, TimeUnit.DAYS)
     //    Runtime.getRuntime.addShutdownHook(new Thread() {

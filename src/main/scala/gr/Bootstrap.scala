@@ -6,7 +6,8 @@ object Bootstrap extends AnyRef
   with UseSprayJson
   with UseAkkaHttp
   with UseLolHttp
-  with UseApacheHttpCore {
+  with UseApacheHttpCore
+  with UseCompoundHttpServer {
 
   def main(args: Array[String]): Unit = {
     useTypesafeConfig
@@ -14,6 +15,7 @@ object Bootstrap extends AnyRef
     useAkkaHttp
     useLolHttp
     useApacheHttpCore
+    useCompoundHttpServer
   }
 
 }
