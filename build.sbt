@@ -19,6 +19,8 @@ libraryDependencies ++= {
   val akkaHttpVersion = "10.1.1"
   val spec2Version = "4.0.4"
   Seq(
+    "org.apache.httpcomponents" % "httpcore" % "4.4.9",
+    "org.apache.httpcomponents" % "httpcore-nio" % "4.4.9",
     "com.criteo.lolhttp" %% "lolhttp" % "0.9.3",
     "io.spray" %%  "spray-json" % "1.3.3",
     "com.typesafe.akka" %% "akka-actor" % akkaVersion,
