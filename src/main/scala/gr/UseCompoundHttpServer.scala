@@ -1,5 +1,6 @@
 package gr
 
+import java.net.InetAddress
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
@@ -25,10 +26,16 @@ trait UseCompoundHttpServer {
 
   protected def useCompoundHttpServer: Unit = {
 
-    val reactorConfig = IOReactorConfig.custom.setSoTimeout(15000).setTcpNoDelay(true).build
+    val reactorConfig = IOReactorConfig.custom
+      .setSelectInterval(10)
+      .setSoReuseAddress(true)
+      .setSoKeepAlive(true)
+      .setTcpNoDelay(true)
+      .build
     val server = ServerBootstrap.bootstrap
+      .setLocalAddress(InetAddress.getByName("::"))
       .setListenerPort(config.getInt("gr.server.port"))
-      .setServerInfo("GraalVM-NativeImage")
+      .setServerInfo("Compound-Http")
       .setIOReactorConfig(reactorConfig)
       .setExceptionLogger(ExceptionLogger.STD_ERR)
       .registerHandler("*", new CompoundHandler(route)).create
