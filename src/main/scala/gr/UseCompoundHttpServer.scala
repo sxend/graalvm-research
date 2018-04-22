@@ -18,6 +18,9 @@ import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.{ ExecutionContextExecutor, Future }
 import scala.util.{ Failure, Success }
 
+import spray.json._
+import DefaultJsonProtocol._
+
 trait UseCompoundHttpServer {
   self: UseSprayJson with UseTypesafeConfig =>
 
@@ -29,15 +32,27 @@ trait UseCompoundHttpServer {
       .setSoKeepAlive(true)
       .setTcpNoDelay(true)
       .build
-
+    def reject = new BaseHttpAsyncRequestHandler({
+      case (req, res) =>
+        res.setStatusCode(HttpStatus.SC_NOT_FOUND)
+        Future.successful(())
+    })
+    def complete(data: String) = new BaseHttpAsyncRequestHandler({
+      case (req, res) =>
+        res.setStatusCode(HttpStatus.SC_OK)
+        res.setEntity(new NStringEntity(data))
+        Future.successful(())
+    })
     val mapper = {
       val mapper = new UriHttpAsyncRequestHandlerMapper()
       val route = Map(
-        "*" -> new BaseHttpAsyncRequestHandler({
+        "/" -> complete("hi"),
+        "/json" -> new BaseHttpAsyncRequestHandler({
           case (req, res) =>
-            res.setEntity(new NStringEntity("hi"))
+            res.setEntity(new NStringEntity(Entity("hello").toJson.prettyPrint, ContentType.APPLICATION_JSON))
             Future.successful(())
-        })
+        }),
+        "*" -> reject
       )
       route.foreach {
         case (pattern, handler) => mapper.register(pattern, handler)
