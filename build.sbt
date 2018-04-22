@@ -19,6 +19,8 @@ libraryDependencies ++= {
   val akkaHttpVersion = "10.1.1"
   val spec2Version = "4.0.4"
   Seq(
+    "redis.clients" % "jedis" % "2.9.0",
+    "mysql" % "mysql-connector-java" % "5.1.46",
     "org.apache.httpcomponents" % "httpcore" % "4.4.9",
     "org.apache.httpcomponents" % "httpcore-nio" % "4.4.9",
     "com.criteo.lolhttp" %% "lolhttp" % "0.9.3",
