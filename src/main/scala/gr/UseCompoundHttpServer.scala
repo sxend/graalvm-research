@@ -34,13 +34,13 @@ trait UseCompoundHttpServer {
       val mapper = new UriHttpAsyncRequestHandlerMapper()
       val route = Map(
         "*" -> new BaseHttpAsyncRequestHandler({
-          case (req, ex, ctx) =>
-            ex.getResponse.setEntity(new NStringEntity("hi"))
+          case (req, res) =>
+            res.setEntity(new NStringEntity("hi"))
             Future.successful(())
         })
       )
       route.foreach {
-        case (p, h) => mapper.register(p, h)
+        case (pattern, handler) => mapper.register(pattern, handler)
       }
       mapper
     }
@@ -58,9 +58,9 @@ trait UseCompoundHttpServer {
   }
 }
 
-class BaseHttpAsyncRequestHandler(handler: (HttpRequest, HttpAsyncExchange, HttpContext) => Future[Unit]) extends HttpAsyncRequestHandler[HttpRequest] {
-  override def handle(t: HttpRequest, httpAsyncExchange: HttpAsyncExchange, httpContext: HttpContext): Unit = {
-    this.handler(t, httpAsyncExchange, httpContext).onComplete(_ => httpAsyncExchange.submitResponse())
+class BaseHttpAsyncRequestHandler(handler: (HttpRequest, HttpResponse) => Future[Unit]) extends HttpAsyncRequestHandler[HttpRequest] {
+  override def handle(req: HttpRequest, ex: HttpAsyncExchange, ctx: HttpContext): Unit = {
+    this.handler(req, ex.getResponse).onComplete(_ => ex.submitResponse())
   }
 
   override def processRequest(httpRequest: HttpRequest, httpContext: HttpContext): HttpAsyncRequestConsumer[HttpRequest] = new BasicAsyncRequestConsumer
