@@ -69,7 +69,7 @@ trait UseCompoundHttpServer {
       .create
     server.start()
     println(s"Use UseCompoundHttpServer. server: ${server.getEndpoint.getAddress.toString}")
-    //    server.shutdown(5, TimeUnit.SECONDS)
+    server.shutdown(10, TimeUnit.SECONDS)
   }
 }
 
