@@ -8,7 +8,8 @@ object Bootstrap extends AnyRef
   with UseLolHttp
   with UseApacheHttpCore
   with UseCompoundHttpServer
-  with UseJedis {
+  with UseJedis
+  with UseNetty {
 
   def main(args: Array[String]): Unit = {
     useTypesafeConfig
@@ -18,6 +19,7 @@ object Bootstrap extends AnyRef
     useApacheHttpCore
     useJedis
     useCompoundHttpServer
+    useNetty
   }
 
 }

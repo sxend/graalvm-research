@@ -55,6 +55,7 @@ scalacOptions ++= Seq(
 
 assemblyMergeStrategy in assembly := {
   case PathList(ps @ _*) if ps.last endsWith "bnd.bnd" => MergeStrategy.first
+  case PathList(ps @ _*) if ps.last endsWith "io.netty.versions.properties" => MergeStrategy.first
   case x => (assemblyMergeStrategy in assembly).value(x)
 }
 
