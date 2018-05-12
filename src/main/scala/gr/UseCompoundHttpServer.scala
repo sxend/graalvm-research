@@ -1,7 +1,7 @@
 package gr
 
 import java.net.InetAddress
-import java.util.Locale
+import java.util.{ Locale, UUID }
 import java.util.concurrent.TimeUnit
 
 import org.apache.http.{ ExceptionLogger, HttpRequest, HttpResponse, HttpStatus }
@@ -17,7 +17,6 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.{ ExecutionContextExecutor, Future }
 import scala.util.{ Failure, Success }
-
 import spray.json._
 import DefaultJsonProtocol._
 
@@ -43,13 +42,14 @@ trait UseCompoundHttpServer {
         res.setEntity(new NStringEntity(data))
         Future.successful(())
     })
+    def entity: Entity = Entity(Metadata(UUID.randomUUID().toString, System.currentTimeMillis()), Payload("hello"))
     val mapper = {
       val mapper = new UriHttpAsyncRequestHandlerMapper()
       val route = Map(
         "/" -> complete("hi"),
         "/json" -> new BaseHttpAsyncRequestHandler({
           case (req, res) =>
-            res.setEntity(new NStringEntity(Entity("hello").toJson.prettyPrint, ContentType.APPLICATION_JSON))
+            res.setEntity(new NStringEntity(entity.toJson.prettyPrint, ContentType.APPLICATION_JSON))
             Future.successful(())
         }),
         "*" -> reject

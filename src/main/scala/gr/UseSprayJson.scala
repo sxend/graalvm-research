@@ -1,11 +1,12 @@
 package gr
 
-import spray.json.DefaultJsonProtocol.jsonFormat1
 import spray.json._
 import DefaultJsonProtocol._
 
 trait UseSprayJson {
-  implicit protected val colorFormat = jsonFormat1(Entity)
+  implicit val metadataFormat = jsonFormat2(Metadata)
+  implicit val paylaodFormat = jsonFormat1(Payload)
+  implicit val entityFormat = jsonFormat2(Entity)
   protected def useSprayJson {
     // implicit val colorFormat = jsonFormat1(Entity) // ここでformat定義は出来ない。下記のような実行時エラー。
     /*
@@ -21,7 +22,16 @@ trait UseSprayJson {
 	    at gr.Bootstrap$.main(Bootstrap.scala:11)
 	    at gr.Bootstrap.main(Bootstrap.scala)
     */
-    val source = """{ "payload": "JSON String" }"""
+    val source =
+      """{
+        |  "payload": {
+        |    "message": "JSON String"
+        |  },
+        |  "metadata": {
+        |    "id": "1672231f-4064-4799-8f3e-e33ecaddb10b",
+        |    "timestamp": 1526118398986
+        |  }
+        |}""".stripMargin
     val deserialized = source.parseJson.convertTo[Entity]
     val serialized = deserialized.toJson.compactPrint
     println(s"Use SprayJSON. source: $source, deserialized: $deserialized, serialized: $serialized")
